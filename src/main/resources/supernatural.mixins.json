@@ -1,9 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.jacobwasbeast.supernatural.mixin",
+  "package": "net.jacobwasbeast.supernatural.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "PlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

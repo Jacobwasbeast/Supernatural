@@ -64,9 +64,9 @@ public class ColtItem extends Item {
 
             // Create and fire the bullet entity
             ColtBulletEntity bullet = new ColtBulletEntity(ModEntities.COLT_BULLET, player, world);
-            bullet.setPos(player.getX(), player.getEyeY() - 0.1F, player.getZ());
-            bullet.setVelocity(player, player.getPitch(), player.getYaw(), 0.0F, 3.0F, 1.0F);  // Bullet speed and accuracy
-            world.spawnEntity(bullet);  // Spawn the bullet
+            Vec3d look = player.getRotationVec(1.0F);
+            bullet.setVelocity(look.x, look.y, look.z, 1.5F, 0.0F);
+            world.spawnEntity(bullet);
         }
     }
 

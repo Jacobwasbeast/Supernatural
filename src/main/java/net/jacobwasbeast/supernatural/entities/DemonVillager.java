@@ -2,6 +2,7 @@ package net.jacobwasbeast.supernatural.entities;
 
 import net.fabricmc.fabric.api.object.builder.v1.villager.VillagerProfessionBuilder;
 import net.jacobwasbeast.supernatural.api.DemonInterface;
+import net.jacobwasbeast.supernatural.api.PsalmTargetManager;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -31,9 +32,7 @@ import net.minecraft.village.TradeOffer;
 import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.World;
 
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class DemonVillager extends VillagerEntity implements DemonInterface {
 
@@ -61,7 +60,11 @@ public class DemonVillager extends VillagerEntity implements DemonInterface {
 
         // Kill Iron Golems
         this.goalSelector.add(3, new Haunt(this));
+
+        // Target players
+        this.targetSelector.add(2, new SpecificPlayerTargetGoal(this));
     }
+
 
     @Override
     public void onDamaged(DamageSource damageSource) {
@@ -163,6 +166,64 @@ public class DemonVillager extends VillagerEntity implements DemonInterface {
         }
     }
 
+    /**
+     * Custom AI Goal for DemonVillagers to target specific players.
+     */
+    static class SpecificPlayerTargetGoal extends ActiveTargetGoal<PlayerEntity> {
+        private final DemonVillager demonVillager;
+
+        public SpecificPlayerTargetGoal(DemonVillager demonVillager) {
+            super(demonVillager, PlayerEntity.class, true);
+            this.demonVillager = demonVillager;
+            this.setControls(EnumSet.of(Control.TARGET));
+        }
+
+        @Override
+        public boolean canStart() {
+            // Check if there are any players in the PsalmTargetManager
+            Set<UUID> targetedPlayerUUIDs = PsalmTargetManager.getInstance().getTargetedPlayers();
+            if (targetedPlayerUUIDs.isEmpty()) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean shouldContinue() {
+            PlayerEntity target = this.getTarget();
+            if (target == null || !PsalmTargetManager.getInstance().isTargeted(target)) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+            PlayerEntity target = this.getTarget();
+            if (target != null) {
+                this.demonVillager.navigation.startMovingTo(target, 1.0);
+                if (this.demonVillager.squaredDistanceTo(target) < 2.0) {
+                    this.demonVillager.attackLivingEntity(target);
+                    target.damage(this.demonVillager.getDamageSources().mobAttack(this.demonVillager), 2.0F);
+                }
+            }
+        }
+
+        public PlayerEntity getTarget() {
+            World world = this.demonVillager.getEntityWorld();
+            Set<UUID> targetedPlayerUUIDs = PsalmTargetManager.getInstance().getTargetedPlayers();
+            for (UUID playerUUID : targetedPlayerUUIDs) {
+                Entity entity = world.getPlayerByUuid(playerUUID);
+                if (entity instanceof PlayerEntity) {
+                    if (this.demonVillager.getBlockPos().isWithinDistance(entity.getBlockPos(), 50.0)) {
+                        return (PlayerEntity) entity;
+                    }
+                }
+            }
+            return null;
+        }
+    }
 
     // Custom AI goal to kill iron golems
     static class Haunt extends Goal {

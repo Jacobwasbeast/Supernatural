@@ -124,18 +124,18 @@ public class DemonEntity extends HostileEntity {
         super.initGoals();
 
         // Primary Airborne Movement Goals
-        this.goalSelector.add(1, new AirPatrolGoal());  // Highest priority for patrolling
-        this.goalSelector.add(2, new StartAttackGoal());
-        this.goalSelector.add(3, new SwoopMovementGoal());
+        this.goalSelector.add(5, new AirPatrolGoal());
+        this.goalSelector.add(6, new StartAttackGoal());
+        this.goalSelector.add(7, new SwoopMovementGoal());
         this.goalSelector.add(8, new CircleMovementGoal());
 
         // Targeting Goals
-        this.targetSelector.add(1, new FindTargetGoal());
+        this.targetSelector.add(4, new FindTargetGoal());
 
         // Secondary AI Goals
-        this.goalSelector.add(4, new RunAwayGoal(this));
-        this.goalSelector.add(5, new PossessVillagerGoal(this));
-        this.goalSelector.add(6, new SeekVillagerGoal(this));
+        this.goalSelector.add(3, new RunAwayGoal(this));
+        this.goalSelector.add(2, new PossessVillagerGoal(this));
+        this.goalSelector.add(1, new SeekVillagerGoal(this));
     }
 
     @Override

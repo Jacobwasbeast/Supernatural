@@ -1,6 +1,7 @@
 package net.jacobwasbeast.supernatural.items;
 
 import net.jacobwasbeast.supernatural.ModEntities;
+import net.jacobwasbeast.supernatural.api.PsalmTargetManager;
 import net.jacobwasbeast.supernatural.entities.DemonEntity;
 import net.jacobwasbeast.supernatural.entities.DemonVillager;
 import net.jacobwasbeast.supernatural.entities.FakeLightning;
@@ -95,12 +96,16 @@ public class Psalm extends Item {
                     // Display remaining words
                     int wordsLeft = PSALM_WORDS.length - currentWordIndex;
                     player.sendMessage(Text.of("Words left to read: " + wordsLeft), true);
+                    if (!PsalmTargetManager.getInstance().isTargeted(player)) {
+                        PsalmTargetManager.getInstance().addTarget(player);
+                    }
                 } else {
                     // Psalm is finished, eject demons
                     ejectDemons(player, world);
                     resetPsalm();
                     isCooldown = true; // Start cooldown after completing the psalm
                     cooldownTimer = 100; // Set cooldown duration
+                    PsalmTargetManager.getInstance().removeTarget(player);
                     player.sendMessage(Text.of("The psalm is complete! A cooldown is now active."), true);
                 }
             }
@@ -146,7 +151,6 @@ public class Psalm extends Item {
                 fakeLightning.refreshPositionAndAngles(demon.getX(), demon.getY(), demon.getZ(), demon.getYaw(), demon.getPitch());
                 ((ServerWorld) world).spawnEntity(fakeLightning);
             }
-
             player.sendMessage(Text.of((nearbyDemons.size() + nearbyDemonsVillagers.size()) + " demons exorcism complete."), true);
         }
     }
@@ -154,7 +158,7 @@ public class Psalm extends Item {
     /**
      * Reset the psalm reading process.
      */
-    private void resetPsalm() {
+    public void resetPsalm() {
         currentWordIndex = 0;
         tickCounter = 0;
         isActive = false;
@@ -171,6 +175,7 @@ public class Psalm extends Item {
             PlayerEntity player = (PlayerEntity) user;
             player.sendMessage(Text.of("You stopped reading the psalm."), true);
             resetPsalm();
+            PsalmTargetManager.getInstance().removeTarget(player);
         }
     }
 
