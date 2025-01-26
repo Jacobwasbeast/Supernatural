@@ -21,6 +21,7 @@ public class RitualGUI extends BaseOwoScreen<FlowLayout> {
     protected @NotNull OwoUIAdapter<FlowLayout> createAdapter() {
         RitualManager.getInstance().rituals.forEach((id, ritual) -> {
             Identifier reference = ritual.reference;
+            reference = reference.withPath("textures/gui/" + reference.getPath() + ".png");
             components.add(Containers.verticalFlow(Sizing.content(), Sizing.content())
                     .child(Components.button(Text.of(ritual.name), button -> {
                         System.out.println("click");
@@ -29,7 +30,7 @@ public class RitualGUI extends BaseOwoScreen<FlowLayout> {
                     .surface(Surface.DARK_PANEL)
                     .verticalAlignment(VerticalAlignment.CENTER)
                     .horizontalAlignment(HorizontalAlignment.CENTER));
-            components.add(Components.texture(reference, 10, 10, 100, 100, 100, 100));
+            components.add(Components.texture(reference, 0, 0, 100, 100, 100, 100));
             components.add(Components.label(Text.of(ritual.description)));
         });
         maxPage = components.size() / 3;

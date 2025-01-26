@@ -1,8 +1,7 @@
 package net.jacobwasbeast.supernatural.entities;
 
-import net.fabricmc.fabric.api.object.builder.v1.villager.VillagerProfessionBuilder;
-import net.jacobwasbeast.supernatural.api.DemonInterface;
 import net.jacobwasbeast.supernatural.api.PsalmTargetManager;
+import net.jacobwasbeast.supernatural.api.RitualManager;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -12,29 +11,25 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.village.TradeOffer;
-import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.World;
 
 import java.util.*;
 
-public class DemonVillager extends VillagerEntity implements DemonInterface {
+public class DemonVillager extends VillagerEntity {
 
     private NbtCompound originalVillagerData;
 
@@ -312,5 +307,13 @@ public class DemonVillager extends VillagerEntity implements DemonInterface {
             return super.interactMob(player, hand);
         }
         return ActionResult.FAIL;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (RitualManager.getInstance().isInDevilsTrap(this.getWorld(), this.getBlockPos())) {
+            this.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS,10,255));
+        }
     }
 }

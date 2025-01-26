@@ -12,6 +12,7 @@ public class SupernaturalMain implements ModInitializer {
         FieldRegistrationHandler.register(ModEntities.class, "supernatural", false);
         FieldRegistrationHandler.register(ModItems.class, "supernatural", false);
         ModEntities.registerEntities();
+        ModBlocks.registerBlocks();
         PsalmTargetManager.getInstance();
         ServerPlayConnectionEvents.DISCONNECT.register((player, server) -> {
             PsalmTargetManager.getInstance().removeTarget(player.getPlayer());
@@ -19,6 +20,6 @@ public class SupernaturalMain implements ModInitializer {
     }
 
     public static Identifier id(String path) {
-        return new Identifier("supernatural", path);
+        return new Identifier("supernatural", path.toLowerCase());
     }
 }

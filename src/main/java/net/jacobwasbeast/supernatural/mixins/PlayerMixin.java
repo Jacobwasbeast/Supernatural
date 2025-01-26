@@ -18,7 +18,6 @@ public class PlayerMixin {
     public void onDeath(DamageSource damageSource, CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity) (Object) this;
         if (player.getInventory().contains(ModItems.PSALM.getDefaultStack())) {
-            player.sendMessage(Text.of("You have died!"), true);
             Psalm psalm = (Psalm) player.getInventory().getStack(player.getInventory().getSlotWithStack(ModItems.PSALM.getDefaultStack())).getItem();
             psalm.resetPsalm();
             PsalmTargetManager.getInstance().removeTarget(player);
