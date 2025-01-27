@@ -1,5 +1,10 @@
     {
+	"itemGroup.supernatural.group": "§l§uSupernatural",
+	"item.supernatural.colt": "§l§eThe Colt",
+	"item.supernatural.colt_bullet": "§lDevil's Trap Bullet",
+	"item.supernatural.psalm": "§lThe Psalm",
         "item.supernatural.demon_spawn_egg": "Demon Spawn Egg",
+	"item.supernatural.demon_villager_spawn_egg": "Demon-Possessed Villager Spawn Egg",
 	"item.supernatural.ritual_creator": "Ritual Creator",
 	"item.supernatural.ritual_book": "Book of Rituals",
 	"item.supernatural.salt_shaker": "Salt Shaker",

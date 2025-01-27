@@ -59,30 +59,33 @@ public class ColtItem extends Item {
 
     private void shoot(ItemStack stack, World world, PlayerEntity player) {
         if (!world.isClient) {
-            // Play shooting sound
             world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_FIREWORK_ROCKET_BLAST, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
-            // Create and fire the bullet entity
             ColtBulletEntity bullet = new ColtBulletEntity(ModEntities.COLT_BULLET, player, world);
             Vec3d look = player.getRotationVec(1.0F);
-            bullet.setVelocity(look.x, look.y, look.z, 1.5F, 0.0F);
+
+            bullet.setVelocity(
+                    look.x,
+                    look.y,
+                    look.z,
+                    150F,
+                    0.0F
+            );
+
             world.spawnEntity(bullet);
         }
     }
 
     public void loadRound(ItemStack stack, World world, PlayerEntity player) {
-        // Check inventory for COLTBULLET and load it into the COLT
         int currentAmmo = 0;
         NbtCompound tag = stack.getOrCreateNbt();
         if (tag.contains("ammo")) {
             currentAmmo = tag.getInt("ammo");
         }
         if (currentAmmo < 6) {
-            // Loop through inventory and find COLTBULLET
             for (int i = 0; i < player.getInventory().size(); i++) {
                 ItemStack invStack = player.getInventory().getStack(i);
-                if (invStack.getItem() == ModItems.COLTBULLET) {
-                    // Remove one bullet from the player's inventory and load it into the Colt
+                if (invStack.getItem() == ModItems.COLT_BULLET) {
                     invStack.decrement(1);
                     tag.putInt("ammo", currentAmmo + 1);
                     player.sendMessage(Text.of("Reloaded 1 bullet into the Colt. Ammo: " + (currentAmmo + 1) + "/6"), true);

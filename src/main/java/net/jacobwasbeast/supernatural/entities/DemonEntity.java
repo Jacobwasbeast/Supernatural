@@ -1,6 +1,7 @@
 package net.jacobwasbeast.supernatural.entities;
 
 import net.jacobwasbeast.supernatural.ModEntities;
+import net.jacobwasbeast.supernatural.api.RitualManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
@@ -152,6 +153,9 @@ public class DemonEntity extends HostileEntity {
         // Neutralize Y velocity to maintain stable flight
         Vec3d velocity = this.getVelocity();
         this.setVelocity(velocity.x, 0.0, velocity.z);  // Prevent unintended vertical movement
+        if (RitualManager.getInstance().isInDevilsTrap(getWorld(),getBlockPos())) {
+            runAway = true;
+        }
     }
 
     // Collision handling

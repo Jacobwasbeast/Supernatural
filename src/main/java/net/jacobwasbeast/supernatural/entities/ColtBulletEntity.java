@@ -24,7 +24,7 @@ public class ColtBulletEntity extends PersistentProjectileEntity implements Flyi
 
     @Override
     protected ItemStack asItemStack() {
-        return new ItemStack(ModItems.COLTBULLET);
+        return new ItemStack(ModItems.COLT_BULLET);
     }
 
     @Override
@@ -56,6 +56,6 @@ public class ColtBulletEntity extends PersistentProjectileEntity implements Flyi
 
     @Override
     public ItemStack getStack() {
-        return new ItemStack(ModItems.COLTBULLET);
+        return new ItemStack(ModItems.COLT_BULLET);
     }
 }

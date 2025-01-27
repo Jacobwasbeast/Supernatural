@@ -7,6 +7,7 @@ import de.dafuqs.chalk.common.blocks.ChalkMarkBlock;
 import net.jacobwasbeast.supernatural.ModBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.WireConnection;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.DustParticleEffect;
@@ -445,5 +446,19 @@ public class Salt extends Block {
                 world.updateNeighborsExcept(blockPos, newState.getBlock(), direction.getOpposite());
             }
         }
+    }
+
+    @Override
+    public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
+        super.onSteppedOn(world, pos, state, entity);
+        world.breakBlock(pos,false,entity);
+        world.markDirty(pos);
+    }
+
+    @Override
+    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+        super.onEntityCollision(state, world, pos, entity);
+        world.breakBlock(pos,false,entity);
+        world.markDirty(pos);
     }
 }

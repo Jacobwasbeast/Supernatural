@@ -16,7 +16,9 @@ public class ModEntities implements EntityRegistryContainer {
     public static final EntityType<DemonVillager> DEMON_VILLAGER = FabricEntityTypeBuilder.create(SpawnGroup.MONSTER, DemonVillager::new).dimensions(EntityDimensions.fixed(0.6f, 1.95f)).build();
     public static final EntityType<ColtBulletEntity> COLT_BULLET = FabricEntityTypeBuilder.<ColtBulletEntity>create(SpawnGroup.MISC, ColtBulletEntity::new).dimensions(EntityDimensions.fixed(0.5f, 0.5f)).build();
     public static final EntityType<FakeLightning> FAKELIGHTNING = FabricEntityTypeBuilder.<FakeLightning>create(SpawnGroup.MISC, FakeLightning::new).dimensions(EntityDimensions.fixed(0.5f, 0.5f)).build();
-    public static void registerEntities() {
+
+    @Override
+    public void afterFieldProcessing() {
         FabricDefaultAttributeRegistry.register(DEMON, DemonEntity.createDemonAttributes());
         FabricDefaultAttributeRegistry.register(DEMON_VILLAGER, DemonVillager.createDemonVillagerAttributes());
     }
