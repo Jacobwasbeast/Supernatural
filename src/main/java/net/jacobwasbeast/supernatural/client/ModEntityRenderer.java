@@ -19,5 +19,7 @@ public class ModEntityRenderer {
         EntityRendererRegistry.register(ModEntities.FAKELIGHTNING, LightningEntityRenderer::new);
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.CHALK_SYMBOL, RenderLayer.getCutout());
         ColorProviderRegistry.BLOCK.register((state, world, pos, index) -> 2364706, ModBlocks.CHALK_SYMBOL);
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SALT, RenderLayer.getCutout());
+        ColorProviderRegistry.BLOCK.register((state, world, pos, index) -> 15264493, ModBlocks.SALT);
     }
 }

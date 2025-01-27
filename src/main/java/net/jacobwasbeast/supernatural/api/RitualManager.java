@@ -53,7 +53,7 @@ public class RitualManager {
         });
         NULL_RITUAL = new Ritual("NULL", "NULL", SupernaturalMain.id("NULL"), NULL,5);
         rituals.put("DEVILS_TRAP", new Ritual("Devil's Trap", "A trap used to capture demons", SupernaturalMain.id("devilstrap"), devilsTrap,5));
-        rituals.put("PROTECTION_CIRCLE", new Ritual("Protection's Circle", "A circle used to protect against demons", SupernaturalMain.id("protectioncircle"), protectionCircle,5));
+        rituals.put("PROTECTION_CIRCLE", new Ritual("Protection's Circle", "A circle used to protect against supernatural entities (mainly ghosts and spirits)", SupernaturalMain.id("protectioncircle"), protectionCircle,5));
     }
 
     /**
