@@ -2,6 +2,8 @@ package net.jacobwasbeast.supernatural.entities;
 
 import net.jacobwasbeast.supernatural.api.PsalmTargetManager;
 import net.jacobwasbeast.supernatural.api.RitualManager;
+import net.jacobwasbeast.supernatural.items.ColtItem;
+import net.jacobwasbeast.supernatural.items.RubyKnife;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -100,7 +102,15 @@ public class DemonVillager extends VillagerEntity {
     @Override
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
-        this.ejectVillager();
+        boolean shouldEject = true;
+        if (damageSource.getAttacker() instanceof LivingEntity attacker) {
+            if (attacker.getMainHandStack().getItem() instanceof RubyKnife || attacker.getMainHandStack().getItem() instanceof ColtItem) {
+                shouldEject = false;
+            }
+        }
+        if (shouldEject) {
+            this.ejectVillager();
+        }
     }
 
     public void ejectVillager() {
