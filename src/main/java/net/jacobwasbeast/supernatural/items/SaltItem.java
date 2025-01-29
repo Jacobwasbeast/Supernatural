@@ -5,6 +5,7 @@ import de.dafuqs.chalk.common.ChalkRegistry;
 import de.dafuqs.chalk.common.items.ChalkItem;
 import net.jacobwasbeast.supernatural.ModBlocks;
 import net.jacobwasbeast.supernatural.blocks.Salt;
+import net.jacobwasbeast.supernatural.blocks.entities.HauntedBonesEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
@@ -24,6 +26,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class SaltItem extends Item {
@@ -36,6 +39,20 @@ public class SaltItem extends Item {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
+        if (context.getWorld().getBlockState(context.getBlockPos()).isOf(ModBlocks.HAUNTED_BONES)) {
+            HauntedBonesEntity bones = (HauntedBonesEntity)context.getWorld().getBlockEntity(context.getBlockPos());
+            if (bones.isSalted()) {
+                Objects.requireNonNull(context.getPlayer()).sendMessage(Text.literal("These bones have already been salted."), true);
+                return ActionResult.FAIL;
+            }
+            else {
+                bones.setIsSalted(true);
+                context.getWorld().playSound(
+                        null, context.getBlockPos(), SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, SoundCategory.BLOCKS, 0.6F, context.getWorld().random.nextFloat() * 0.2F + 0.8F
+                );
+                return ActionResult.CONSUME;
+            }
+        }
         World world = context.getWorld();
         BlockPos pos = context.getBlockPos();
         BlockState clickedBlockState = world.getBlockState(pos);

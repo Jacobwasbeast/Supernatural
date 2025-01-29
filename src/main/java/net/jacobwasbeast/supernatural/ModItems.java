@@ -21,5 +21,4 @@ public class ModItems implements ItemRegistryContainer {
     public static final Item PSALM = new Psalm(new Item.Settings().maxCount(1));
     public static final Item DEMON_SPAWN_EGG = new SpawnEggItem(ModEntities.DEMON, 0x5d1009, 0x746261, new FabricItemSettings().maxCount(64));
     public static final Item DEMON_VILLAGER_SPAWN_EGG = new SpawnEggItem(ModEntities.DEMON_VILLAGER, 0x3d1009, 0x526261, new FabricItemSettings().maxCount(64));
-
 }
